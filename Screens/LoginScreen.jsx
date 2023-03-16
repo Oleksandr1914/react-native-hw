@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
+  Dimensions,
 } from "react-native";
 
 const initialState = {
@@ -24,6 +25,17 @@ export default function RegistrationScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [emailFocus, setEmailFocus] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
+  const [dimensions, setDimensions] = useState(Dimensions.get("window").width);
+
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width;
+      setDimensions(width);
+    };
+    const subscription = Dimensions.addEventListener("change", onChange);
+
+    return () => subscription?.remove();
+  }, []);
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
@@ -46,6 +58,7 @@ export default function RegistrationScreen() {
             style={{
               ...styles.loginBox,
               paddingBottom: !isShowKeyboard ? 78 : 32,
+              width: dimensions,
             }}
           >
             <Text style={styles.title}>Войти</Text>
@@ -62,14 +75,12 @@ export default function RegistrationScreen() {
                   }}
                   placeholder="Адрес электронной почты"
                   onFocus={() => {
-                    if (!isShowKeyboard) {
-                      setEmailFocus(true);
-                      setIsShowKeyboard(true);
-                    }
+                    setEmailFocus(true);
+                    setIsShowKeyboard(true);
                   }}
                   onEndEditing={() => {
                     setEmailFocus(false);
-                    setIsShowKeyboard(false);
+                    // setIsShowKeyboard(false);
                   }}
                   onChangeText={(value) =>
                     setState((prevState) => ({ ...prevState, email: value }))
@@ -84,14 +95,12 @@ export default function RegistrationScreen() {
                   }}
                   placeholder="Пароль"
                   onFocus={() => {
-                    if (!isShowKeyboard) {
-                      setPasswordFocus(true);
-                      setIsShowKeyboard(true);
-                    }
+                    setPasswordFocus(true);
+                    setIsShowKeyboard(true);
                   }}
                   onEndEditing={() => {
                     setPasswordFocus(false);
-                    setIsShowKeyboard(false);
+                    // setIsShowKeyboard(false);
                   }}
                   secureTextEntry={onPassword}
                   onChangeText={(value) =>

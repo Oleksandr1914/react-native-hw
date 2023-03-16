@@ -4,9 +4,11 @@ import { useCallback } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
+import Reactotron from "reactotron-react-native";
 
 SplashScreen.preventAutoHideAsync();
 
+Reactotron.configure().connect();
 export default function App() {
   const [fontsLoaded] = useFonts({
     medium: require("./fonts/Roboto-Medium.ttf"),
