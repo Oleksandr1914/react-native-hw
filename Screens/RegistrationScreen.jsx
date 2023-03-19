@@ -19,7 +19,7 @@ const initialState = {
   password: "",
 };
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ navigation }) {
   const [state, setState] = useState(initialState);
   const [onPassword, setOnPassword] = useState(true);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
@@ -77,14 +77,12 @@ export default function RegistrationScreen() {
                   }}
                   placeholder="Логин"
                   onFocus={() => {
-                    if (!isShowKeyboard) {
-                      setloginFocus(true);
-                      setIsShowKeyboard(true);
-                    }
+                    setloginFocus(true);
+                    setIsShowKeyboard(true);
                   }}
                   onEndEditing={() => {
                     setloginFocus(false);
-                    setIsShowKeyboard(false);
+                    // setIsShowKeyboard(false);
                   }}
                   onChangeText={(value) =>
                     setState((prevState) => ({ ...prevState, login: value }))
@@ -99,14 +97,12 @@ export default function RegistrationScreen() {
                   }}
                   placeholder="Адрес электронной почты"
                   onFocus={() => {
-                    if (!isShowKeyboard) {
-                      setEmailFocus(true);
-                      setIsShowKeyboard(true);
-                    }
+                    setEmailFocus(true);
+                    setIsShowKeyboard(true);
                   }}
                   onEndEditing={() => {
                     setEmailFocus(false);
-                    setIsShowKeyboard(false);
+                    // setIsShowKeyboard(false);
                   }}
                   onChangeText={(value) =>
                     setState((prevState) => ({ ...prevState, email: value }))
@@ -121,14 +117,12 @@ export default function RegistrationScreen() {
                   }}
                   placeholder="Пароль"
                   onFocus={() => {
-                    if (!isShowKeyboard) {
-                      setPasswordFocus(true);
-                      setIsShowKeyboard(true);
-                    }
+                    setPasswordFocus(true);
+                    setIsShowKeyboard(true);
                   }}
                   onEndEditing={() => {
                     setPasswordFocus(false);
-                    setIsShowKeyboard(false);
+                    // setIsShowKeyboard(false);
                   }}
                   secureTextEntry={onPassword}
                   onChangeText={(value) =>
@@ -156,7 +150,11 @@ export default function RegistrationScreen() {
                 >
                   <Text style={styles.btnRegisterText}>Зарегистрироваться</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.6} style={styles.btnLogin}>
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  style={styles.btnLogin}
+                  onPress={() => navigation.navigate("Login")}
+                >
                   <Text style={styles.btnLoginText}>
                     Уже есть аккаунт? Войти
                   </Text>
@@ -212,8 +210,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 92,
-    fontFamily: "medium",
-    fontWeight: 500,
+    // fontFamily: "medium",
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
@@ -223,11 +220,12 @@ const styles = StyleSheet.create({
   form: {
     position: "relative",
     marginTop: 17,
-    gap: 16,
+    // gap: 16,
     width: "100%",
     alignItems: "center",
   },
   input: {
+    marginBottom: 16,
     width: "100%",
     height: 50,
     padding: 16,

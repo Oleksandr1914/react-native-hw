@@ -19,7 +19,7 @@ const initialState = {
   password: "",
 };
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ navigation }) {
   const [state, setState] = useState(initialState);
   const [onPassword, setOnPassword] = useState(true);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
@@ -128,7 +128,11 @@ export default function RegistrationScreen() {
                 >
                   <Text style={styles.btnLoginText}>Войти</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.6} style={styles.btnRegistr}>
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  style={styles.btnRegistr}
+                  onPress={() => navigation.navigate("Register")}
+                >
                   <Text style={styles.btnRegistrText}>
                     Нет аккаунта? Зарегистрироваться
                   </Text>
@@ -165,8 +169,8 @@ const styles = StyleSheet.create({
 
   title: {
     marginTop: 32,
-    fontFamily: "medium",
-    fontWeight: 500,
+    // fontFamily: "medium",
+
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
@@ -176,11 +180,12 @@ const styles = StyleSheet.create({
   form: {
     position: "relative",
     marginTop: 17,
-    gap: 16,
+    // gap: 16,
     width: "100%",
     alignItems: "center",
   },
   input: {
+    marginBottom: 16,
     width: "100%",
     height: 50,
     padding: 16,

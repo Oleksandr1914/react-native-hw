@@ -1,0 +1,76 @@
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import RegistrationScreen from "./Screens/RegistrationScreen";
+import LoginScreen from "./Screens/LoginScreen";
+import PostsScreen from "./Screens/PostsScreen";
+import ProfileScreen from "./Screens/ProfileScreen";
+import CreatePostsScreen from "./Screens/CreatePostsScreen";
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Feather } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+
+const AuthStack = createNativeStackNavigator();
+const MainTab = createBottomTabNavigator();
+
+export const useRouts = (isAuth) => {
+  if (!isAuth) {
+    return (
+      <AuthStack.Navigator>
+        <AuthStack.Screen
+          options={{ headerShown: false }}
+          name="Register"
+          component={RegistrationScreen}
+        />
+        <AuthStack.Screen
+          options={{ headerShown: false }}
+          name="Login"
+          component={LoginScreen}
+        />
+      </AuthStack.Navigator>
+    );
+  }
+  return (
+    <MainTab.Navigator
+      screenOptions={{ tabBarShowLabel: false, tabBarStyle: { height: 83 } }}
+    >
+      <MainTab.Screen
+        options={{
+          tabBarIcon: () => (
+            <Feather name="grid" size={24} color="rgba(33, 33, 33, 0.8)" />
+          ),
+
+          headerRight: () => (
+            <MaterialIcons
+              name="logout"
+              size={24}
+              color="#BDBDBD"
+              style={{ paddingRight: 12 }}
+              onPress={() => alert("BUTTON!!!!")}
+            />
+          ),
+        }}
+        name="Posts"
+        component={PostsScreen}
+      />
+      <MainTab.Screen
+        options={{
+          tabBarIcon: ({ focused, size, color }) => (
+            <Feather name="plus" size={24} color="rgba(33, 33, 33, 0.8)" />
+          ),
+        }}
+        name="Create Post"
+        component={CreatePostsScreen}
+      />
+      <MainTab.Screen
+        options={{
+          tabBarIcon: ({ focused, size, color }) => (
+            <Feather name="user" size={24} color="rgba(33, 33, 33, 0.8)" />
+          ),
+        }}
+        name="Profile"
+        component={ProfileScreen}
+      />
+    </MainTab.Navigator>
+  );
+};
