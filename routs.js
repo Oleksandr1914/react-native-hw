@@ -1,12 +1,14 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import React from "react";
 
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
-import PostsScreen from "./Screens/PostsScreen";
-import ProfileScreen from "./Screens/ProfileScreen";
-import CreatePostsScreen from "./Screens/CreatePostsScreen";
-import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import PostsScreen from "./Screens/mainScreens/PostsScreen";
+import ProfileScreen from "./Screens/mainScreens/ProfileScreen";
+import CreatePostsScreen from "./Screens/mainScreens/CreatePostsScreen";
+
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 

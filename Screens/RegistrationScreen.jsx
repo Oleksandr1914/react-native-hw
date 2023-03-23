@@ -220,7 +220,6 @@ const styles = StyleSheet.create({
   form: {
     position: "relative",
     marginTop: 17,
-    // gap: 16,
     width: "100%",
     alignItems: "center",
   },
