@@ -13,6 +13,8 @@ import {
   KeyboardAvoidingView,
   Dimensions,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../redux/auth/authOperation";
 
 const initialState = {
   email: "",
@@ -26,6 +28,8 @@ export default function RegistrationScreen({ navigation }) {
   const [emailFocus, setEmailFocus] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [dimensions, setDimensions] = useState(Dimensions.get("window").width);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const onChange = () => {
@@ -43,7 +47,7 @@ export default function RegistrationScreen({ navigation }) {
   };
 
   const onBtnInput = () => {
-    console.log(state);
+    dispatch(loginUser(state));
     setState(initialState);
   };
 

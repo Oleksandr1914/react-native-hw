@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { onSnapshot, collection } from "firebase/firestore";
+import { db } from "../../firebase/config";
 
 const COURSES = {
   id: "45k6-j54k-4jth",
@@ -19,12 +21,17 @@ const DefaultScreenPost = ({ route, navigation }) => {
   const [courses, setCourses] = useState(COURSES);
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-    }
-  }, [route.params]);
+  const getAllPost = async () => {
+    const dbRef = await collection(db, "posts");
+    onSnapshot(dbRef, (docsSnap) => {
+      setPosts(docsSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+  };
 
+  useEffect(() => {
+    getAllPost();
+  }, []);
+  console.log(posts);
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -49,7 +56,7 @@ const DefaultScreenPost = ({ route, navigation }) => {
                 overflow: "hidden",
               }}
             />
-            <Text style={styles.nameCard}>{item.state.name}</Text>
+            <Text style={styles.nameCard}>{item.title}</Text>
             <View
               style={{
                 flexDirection: "row",
@@ -58,7 +65,9 @@ const DefaultScreenPost = ({ route, navigation }) => {
               }}
             >
               <TouchableOpacity
-                onPress={() => navigation.navigate("CommentsScreen")}
+                onPress={() =>
+                  navigation.navigate("CommentsScreen", { postId: item.id })
+                }
                 style={{ flexDirection: "row", alignItems: "center" }}
               >
                 <Feather name="message-circle" size={24} color="#BDBDBD" />
@@ -67,14 +76,15 @@ const DefaultScreenPost = ({ route, navigation }) => {
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("MapScreen", {
-                    ...item.map,
-                    ...item.state,
+                    latitude: item.latitude,
+                    longitude: item.longitude,
+                    address: item.address,
                   })
                 }
                 style={{ flexDirection: "row", alignItems: "center" }}
               >
                 <Feather name="map-pin" size={24} color="#BDBDBD" />
-                <Text style={styles.mapTetxt}>{item.state.address}</Text>
+                <Text style={styles.mapTetxt}>{item.address}</Text>
               </TouchableOpacity>
             </View>
           </View>

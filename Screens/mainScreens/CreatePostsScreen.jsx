@@ -14,6 +14,10 @@ import { Camera, CameraType } from "expo-camera";
 import { FontAwesome, Entypo, Feather, FontAwesome5 } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import * as Location from "expo-location";
+import { db, storage } from "../../firebase/config";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useSelector } from "react-redux";
+import { addDoc, collection } from "firebase/firestore";
 
 const initialState = {
   name: "",
@@ -27,6 +31,7 @@ const CreatePostsScreen = ({ navigation }) => {
   const [photo, setPhoto] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [map, setMap] = useState(null);
+  const { userId, login } = useSelector((state) => state.auth);
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
@@ -57,11 +62,46 @@ const CreatePostsScreen = ({ navigation }) => {
     setPhoto(null);
   };
 
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+    const uniqueIdPost = Date.now().toString();
+
+    const storageRef = await ref(storage, `postImages/${uniqueIdPost}.jpg`);
+
+    await uploadBytes(storageRef, file);
+
+    const uploadedPhoto = await getDownloadURL(
+      ref(storage, `postImages/${uniqueIdPost}.jpg`)
+    );
+
+    return uploadedPhoto;
+  };
+
+  const uploadPostToServer = async () => {
+    const uploadedPhoto = await uploadPhotoToServer();
+
+    try {
+      const docRef = await addDoc(collection(db, "posts"), {
+        photo: uploadedPhoto,
+        title: state.name,
+        address: state.address,
+        userId,
+        login,
+        ...map,
+      });
+      console.log(docRef);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
+
   const sendPhoto = () => {
     if (!state.name || !state.address) {
       return Alert.alert("please fill in the blanks!");
     }
-    navigation.navigate("DefaultScreen", { photo, state, map });
+    uploadPostToServer();
+    navigation.navigate("DefaultScreen");
   };
 
   return (

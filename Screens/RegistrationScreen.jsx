@@ -12,6 +12,8 @@ import {
   Keyboard,
   KeyboardAvoidingView,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../redux/auth/authOperation";
 
 const initialState = {
   login: "",
@@ -27,14 +29,17 @@ export default function RegistrationScreen({ navigation }) {
   const [emailFocus, setEmailFocus] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
 
+  const dispatch = useDispatch();
+
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
   };
-  console.log(isShowKeyboard);
+  // console.log(isShowKeyboard);
 
   const onBtnInput = () => {
-    console.log(state);
+    // console.log(state);
+    dispatch(registerUser(state));
     setState(initialState);
   };
 

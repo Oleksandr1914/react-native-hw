@@ -2,18 +2,18 @@ import { View } from "react-native";
 import { useFonts } from "expo-font";
 import { useCallback } from "react";
 import * as SplashScreen from "expo-splash-screen";
+import { Provider } from "react-redux";
 
 import Reactotron from "reactotron-react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { useRouts } from "./routs";
+
+import { store } from "./redux/store";
+import { Main } from "./Main";
 
 SplashScreen.preventAutoHideAsync();
 
 Reactotron.configure().connect();
 
 export default function App() {
-  const routing = useRouts({});
-
   const [fontsLoaded] = useFonts({
     medium: require("./fonts/Roboto-Medium.ttf"),
     normal: require("./fonts/Roboto-Regular.ttf"),
@@ -34,7 +34,9 @@ export default function App() {
       style={{ flex: 1, backgroundColor: "#fff" }}
       onLayout={onLayoutRootView}
     >
-      <NavigationContainer>{routing}</NavigationContainer>
+      <Provider store={store}>
+        <Main />
+      </Provider>
     </View>
   );
 }

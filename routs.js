@@ -11,11 +11,15 @@ import CreatePostsScreen from "./Screens/mainScreens/CreatePostsScreen";
 
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "./redux/auth/authOperation";
 
 const AuthStack = createNativeStackNavigator();
 const MainTab = createBottomTabNavigator();
 
 export const useRouts = (isAuth) => {
+  const dispatch = useDispatch();
+
   if (!isAuth) {
     return (
       <AuthStack.Navigator>
@@ -48,7 +52,7 @@ export const useRouts = (isAuth) => {
               size={24}
               color="#BDBDBD"
               style={{ paddingRight: 12 }}
-              onPress={() => alert("BUTTON!!!!")}
+              onPress={() => dispatch(logoutUser())}
             />
           ),
         }}
